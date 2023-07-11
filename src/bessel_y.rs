@@ -2,8 +2,36 @@ use crate::{bindings::*, derivative::diff_bessel};
 use num::complex::Complex64;
 
 /// Computes the value of the Bessel function of the second kind at z
+///
+/// # Examples
+///
+/// ```rust
+/// # use complex_bessel_rs::bessel_y::bessel_y;
+/// # use num::complex::Complex64;
+///
+/// let res = bessel_y(3.2, Complex64::new(3.4, -1.3));
+///
+/// assert_eq!(res.unwrap(), Complex64::new(-0.4813858986500693, -0.3855273844254463));
+///
+/// ```
 pub fn bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     unsafe { _bessel_y(order, z) }
+}
+
+/// Computes the value of the nth derivative of the Bessel function of the second kind at z
+/// # Examples
+///
+/// ```rust
+/// # use complex_bessel_rs::bessel_y::bessel_y_p;
+/// # use num::complex::Complex64;
+///
+/// let res = bessel_y_p(3.2, Complex64::new(3.4, -1.3), 3);
+///
+/// assert_eq!(res.unwrap(), Complex64::new(-0.29541389817194547, 0.0371390447150487));
+///
+///```
+pub fn bessel_y_p(order: f64, z: Complex64, n: u32) -> Result<Complex64, i32> {
+    diff_bessel(bessel_y, order, z, n as _, -1.0)
 }
 
 unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
@@ -68,27 +96,29 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     Ok(answer)
 }
 
-/// Computes the value of the nth derivative of the Bessel function of the second kind at z
-pub fn bessel_y_p(order: f64, z: Complex64, n: u32) -> Result<Complex64, i32> {
-    diff_bessel(bessel_y, order, z, n as _, -1.0)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use num::complex::Complex64;
     #[test]
     fn test_bessel_y() {
+        println!("test bessel_y");
         let res = bessel_y(3.2, Complex64::new(3.4, -1.3)).unwrap();
-        println!("{}", res);
+
+        assert_eq!(
+            res,
+            Complex64::new(-0.4813858986500693, -0.3855273844254463)
+        );
+        println!("test bessel y: {}", res);
     }
 
     #[test]
     fn test_bessel_y_d() {
+        println!("test bessel_y_p");
         for i in 1..4 {
             let res = bessel_y_p(3.7, Complex64::new(3.1, 2.1), i).unwrap();
 
-            println!("{}", res);
+            println!("test bessel y p:{}", res);
         }
     }
 }

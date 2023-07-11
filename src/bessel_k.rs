@@ -31,7 +31,7 @@ unsafe fn _bessel_k(order: f64, z: Complex64) -> Result<Complex64, i32> {
 /// # Examples
 /// ```rust
 ///
-/// # use complex_bessel::bessel_k::bessel_k;
+/// # use complex_bessel_rs::bessel_k::bessel_k;
 /// # use num::complex::Complex64;
 ///
 /// let res = bessel_k(2.1, Complex64::new(-2.0, 43.1));
