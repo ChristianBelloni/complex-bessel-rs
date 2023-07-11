@@ -1,6 +1,7 @@
 use crate::{bindings::*, derivative::diff_bessel};
 use num::complex::Complex64;
 
+/// Computes the value of the Bessel function of the second kind at z
 pub fn bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     unsafe { _bessel_y(order, z) }
 }
@@ -67,6 +68,7 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     Ok(answer)
 }
 
+/// Computes the value of the nth derivative of the Bessel function of the second kind at z
 pub fn bessel_y_p(order: f64, z: Complex64, n: u32) -> Result<Complex64, i32> {
     diff_bessel(bessel_y, order, z, n as _, -1.0)
 }
