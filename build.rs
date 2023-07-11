@@ -22,7 +22,6 @@ pub fn main() {
         .arg(lib_path.to_string_lossy().as_ref())
         .output()
         .expect("failed to compile fortran library,\nare you sure you have gfortran-13 installed?");
-    let err = String::from_utf8_lossy(&cmd.stderr);
     println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
     println!("cargo:rustc-link-lib={}", "amos");
 }
