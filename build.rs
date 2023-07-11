@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::{path::PathBuf, process::Command};
 
 macro_rules! p {
@@ -11,9 +12,9 @@ pub fn main() {
     let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
     let lib_name = "amos";
     let mut lib_path = out_path.clone();
-    lib_path.push(format!("lib{}.a", lib_name));
+    lib_path.push(format!("lib{lib_name}.a"));
 
-    let cmd = Command::new("gfortran-13")
+    Command::new("gfortran-13")
         .arg("-shared")
         .arg("amos/amos_iso_c_fortran_wrapper.f90")
         .arg("amos/machine.for")
@@ -23,7 +24,7 @@ pub fn main() {
         .output()
         .expect("failed to compile fortran library,\nare you sure you have gfortran-13 installed?");
     println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
-    println!("cargo:rustc-link-lib={}", "amos");
+    println!("cargo:rustc-link-lib=amos");
 }
 
 fn get_fortran_compiler() -> Option<String> {

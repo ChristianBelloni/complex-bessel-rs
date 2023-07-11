@@ -15,7 +15,7 @@ unsafe fn _bessel_j(order: f64, z: Complex64) -> Result<Complex64, i32> {
     zbesj_wrap(zr, zi, nu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut ierr);
 
     if zi == 0.0 && zr >= 0.0 {
-        cyi = 0.0.into();
+        cyi = 0.0;
     }
 
     let mut answer = Complex64::new(cyr, cyi);
