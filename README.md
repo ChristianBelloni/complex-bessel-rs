@@ -1,6 +1,7 @@
-![Maintenance](https://img.shields.io/badge/maintenance-activly--developed-brightgreen.svg)
-
-# complex-bessel-rs
+![Maintenance](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
+[![CI](https://github.com/GenericPerson/complex-bessel-rs/actions/workflows/main.yml/badge.svg)](https://github.com/GenericPerson/complex-bessel-rs/actions)
+[![crates-io](https://img.shields.io/crates/v/complex-bessel-rs.svg)](https://crates.io/crates/complex-bessel-rs)
+[![api-docs](https://docs.rs/complex-bessel-rs/badge.svg)](https://docs.rs/complex-bessel-rs)
 
 A library to compute Bessel functions
 
