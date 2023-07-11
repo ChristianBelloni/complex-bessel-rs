@@ -1,33 +1,5 @@
+use crate::{bindings::*, derivative::diff_bessel};
 use num::complex::Complex64;
-use std::ffi::{c_double, c_int};
-
-extern "C" {
-    fn zbesy_wrap(
-        zr: c_double,
-        zi: c_double,
-        nu: c_double,
-        kode: c_int,
-        N: c_int,
-        cyr: *mut c_double,
-        cyi: *mut c_double,
-        nz: *mut c_int,
-        cwrkr: *mut c_double,
-        cwrki: *mut c_double,
-        ierr: *mut c_int,
-    );
-
-    fn zbesj_wrap(
-        zr: c_double,
-        zi: c_double,
-        nu: c_double,
-        kode: c_int,
-        n: c_int,
-        cyr: *mut c_double,
-        cyi: *mut c_double,
-        nz: *mut c_int,
-        ierr: *mut c_int,
-    );
-}
 
 pub fn bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     unsafe { _bessel_y(order, z) }
@@ -95,12 +67,26 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     Ok(answer)
 }
 
+pub fn bessel_y_p(order: f64, z: Complex64, n: u32) -> Result<Complex64, i32> {
+    diff_bessel(bessel_y, order, z, n as _, -1.0)
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
     use num::complex::Complex64;
     #[test]
     fn test_bessel_y() {
-        let res = super::bessel_y(3.2, Complex64::new(3.4, -1.3)).unwrap();
+        let res = bessel_y(3.2, Complex64::new(3.4, -1.3)).unwrap();
         println!("{}", res);
+    }
+
+    #[test]
+    fn test_bessel_y_d() {
+        for i in 1..4 {
+            let res = bessel_y_p(3.7, Complex64::new(3.1, 2.1), i).unwrap();
+
+            println!("{}", res);
+        }
     }
 }
