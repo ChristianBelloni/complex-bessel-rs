@@ -3,6 +3,11 @@ name = "complex-bessel-rs"
 version = "0.0.1"
 edition = "2021"
 readme = "README.md"
+license = "MIT"
+authors = ["Christian Belloni"]
+homepage = "https://github.com/ChristianBelloni/complex-bessel-rs"
+repository = "https://github.com/ChristianBelloni/complex-bessel-rs"
+
 
 [badges]
 maintenance = { status = "actively-developed" }
