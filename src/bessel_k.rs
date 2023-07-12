@@ -1,6 +1,24 @@
 use crate::bindings::zbesk_wrap;
 use num::complex::Complex64;
 
+/// Computes the value of the modified Bessel function of the second kind at z
+///
+/// # Examples
+/// ```ignore
+///
+/// # use complex_bessel_rs::bessel_k::bessel_k;
+/// # use num::complex::Complex64;
+///
+/// let res = bessel_k(2.1, Complex64::new(-2.0, 43.1));
+///
+/// assert_eq!(res.unwrap(), Complex64::new(1.4070411886914238, 0.03590109130313471));
+/// # res.unwrap();
+///
+/// ```
+pub fn bessel_k(order: f64, z: Complex64) -> Result<Complex64, i32> {
+    unsafe { _bessel_k(order, z) }
+}
+
 unsafe fn _bessel_k(order: f64, z: Complex64) -> Result<Complex64, i32> {
     let zr = z.re;
     let zi = z.im;
@@ -24,24 +42,6 @@ unsafe fn _bessel_k(order: f64, z: Complex64) -> Result<Complex64, i32> {
     }
 
     Ok(Complex64::new(cyr, cyi))
-}
-
-/// Computes the value of the modified Bessel function of the second kind at z
-///
-/// # Examples
-/// ```rust
-///
-/// # use complex_bessel_rs::bessel_k::bessel_k;
-/// # use num::complex::Complex64;
-///
-/// let res = bessel_k(2.1, Complex64::new(-2.0, 43.1));
-///
-/// assert_eq!(res.unwrap(), Complex64::new(1.4070411886914238, 0.03590109130313471));
-/// # res.unwrap();
-///
-/// ```
-pub fn bessel_k(order: f64, z: Complex64) -> Result<Complex64, i32> {
-    unsafe { _bessel_k(order, z) }
 }
 
 #[cfg(test)]

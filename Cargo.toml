@@ -8,6 +8,7 @@ license = "MIT"
 authors = ["Christian Belloni"]
 homepage = "https://github.com/ChristianBelloni/complex-bessel-rs"
 repository = "https://github.com/ChristianBelloni/complex-bessel-rs"
+metadata.docs.rs = ["--cfg", "doc"]
 
 
 [badges]

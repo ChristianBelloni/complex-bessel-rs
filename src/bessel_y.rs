@@ -5,7 +5,7 @@ use num::complex::Complex64;
 ///
 /// # Examples
 ///
-/// ```rust
+/// ```ignore
 /// # use complex_bessel_rs::bessel_y::bessel_y;
 /// # use num::complex::Complex64;
 ///
@@ -21,7 +21,7 @@ pub fn bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
 /// Computes the value of the nth derivative of the Bessel function of the second kind at z
 /// # Examples
 ///
-/// ```rust
+/// ```ignore
 /// # use complex_bessel_rs::bessel_y::bessel_y_p;
 /// # use num::complex::Complex64;
 ///

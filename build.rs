@@ -7,6 +7,7 @@ macro_rules! p {
     }
 }
 
+#[cfg(not(doc))]
 pub fn main() {
     _ = get_fortran_compiler().expect("gfortran-13 not installed!");
     let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
@@ -26,6 +27,9 @@ pub fn main() {
     println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
     println!("cargo:rustc-link-lib=amos");
 }
+
+#[cfg(doc)]
+fn main() {}
 
 fn get_fortran_compiler() -> Option<String> {
     Some(
