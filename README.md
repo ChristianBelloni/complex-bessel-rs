@@ -14,4 +14,8 @@ Negative orders are implemented via the standard formulae.
 
 To compile this library is necessary to install gfortran-13
 
-Heavily inspired by [this](https://github.com/joeydumont/complex_bessel) project
+## Credits
+
+- Joey Dumont and Denis Gagnon, complex_bessel: Release 0.6 (jun / 2015)
+  [doi 10.5281/zenodo.18220](https://doi.org/10.5281/zenodo.18220)
+
