@@ -1,7 +1,7 @@
 [package]
 name = "complex-bessel-rs"
 description = "Library to compute Bessel functions"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 readme = "README.md"
 license = "MIT"
@@ -9,7 +9,6 @@ authors = ["Christian Belloni"]
 homepage = "https://github.com/ChristianBelloni/complex-bessel-rs"
 repository = "https://github.com/ChristianBelloni/complex-bessel-rs"
 metadata.docs.rs = ["--cfg", "doc"]
-
 
 [badges]
 maintenance = { status = "actively-developed" }
