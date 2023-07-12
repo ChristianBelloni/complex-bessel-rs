@@ -1,7 +1,7 @@
 [package]
 name = "complex-bessel-rs"
 description = "Library to compute Bessel functions"
-version = "0.0.1"
+version = "0.0.3"
 edition = "2021"
 readme = "README.md"
 license = "MIT"
