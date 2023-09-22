@@ -1,6 +1,16 @@
 #![allow(unused)]
 use std::{path::PathBuf, process::Command};
 
+#[cfg(target_os = "windows")]
+static PATH_FINDER_COMMAND: &str = "where";
+#[cfg(target_os = "linux")]
+static PATH_FINDER_COMMAND: &str = "which";
+
+#[cfg(target_os = "windows")]
+static GFORTRAN_NAME      : &str = "gfortran";
+#[cfg(target_os = "linux")]
+static GFORTRAN_NAME      : &str = "gfortran-13";
+
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
@@ -11,13 +21,13 @@ macro_rules! p {
 pub fn main() {
     if std::env::var("DOCS_RS").is_ok() {
     } else {
-        _ = get_fortran_compiler().expect("gfortran-13 not installed!");
+        _ = get_fortran_compiler().expect(&format!("{} not installed!",GFORTRAN_NAME));
         let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
         let lib_name = "amos";
         let mut lib_path = out_path.clone();
         lib_path.push(format!("lib{lib_name}.a"));
 
-        Command::new("gfortran-13")
+        Command::new(GFORTRAN_NAME)
             .arg("-shared")
             .arg("amos/amos_iso_c_fortran_wrapper.f90")
             .arg("amos/machine.for")
@@ -39,8 +49,8 @@ fn main() {}
 fn get_fortran_compiler() -> Option<String> {
     Some(
         String::from_utf8_lossy(
-            &Command::new("which")
-                .arg("gfortran-13")
+            &Command::new(&PATH_FINDER_COMMAND)
+                .arg(&GFORTRAN_NAME)
                 .output()
                 .ok()?
                 .stdout,
@@ -48,3 +58,4 @@ fn get_fortran_compiler() -> Option<String> {
         .to_string(),
     )
 }
+
