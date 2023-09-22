@@ -11,6 +11,11 @@ static GFORTRAN_NAME: &str = "gfortran";
 #[cfg(target_os = "linux")]
 static GFORTRAN_NAME: &str = "gfortran-13";
 
+#[cfg(target_os = "macos")]
+static GFORTRAN_NAME: &str = "gfortran-13";
+#[cfg(target_os = "macos")]
+static PATH_FINDER_COMMAND: &str = "which";
+
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
