@@ -7,9 +7,9 @@ static PATH_FINDER_COMMAND: &str = "where";
 static PATH_FINDER_COMMAND: &str = "which";
 
 #[cfg(target_os = "windows")]
-static GFORTRAN_NAME      : &str = "gfortran";
+static GFORTRAN_NAME: &str = "gfortran";
 #[cfg(target_os = "linux")]
-static GFORTRAN_NAME      : &str = "gfortran-13";
+static GFORTRAN_NAME: &str = "gfortran-13";
 
 macro_rules! p {
     ($($tokens: tt)*) => {
@@ -21,7 +21,7 @@ macro_rules! p {
 pub fn main() {
     if std::env::var("DOCS_RS").is_ok() {
     } else {
-        _ = get_fortran_compiler().expect(&format!("{} not installed!",GFORTRAN_NAME));
+        _ = get_fortran_compiler().expect(&format!("{} not installed!", GFORTRAN_NAME));
         let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
         let lib_name = "amos";
         let mut lib_path = out_path.clone();
@@ -58,4 +58,3 @@ fn get_fortran_compiler() -> Option<String> {
         .to_string(),
     )
 }
-
