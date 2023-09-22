@@ -16,6 +16,7 @@
 //!   [doi 10.5281/zenodo.18220](https://doi.org/10.5281/zenodo.18220)
 //!   
 
+pub mod bessel_i;
 pub mod bessel_j;
 pub mod bessel_k;
 pub mod bessel_y;
