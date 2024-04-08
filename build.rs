@@ -32,7 +32,9 @@ pub fn main() {
         let mut lib_path = out_path.clone();
         lib_path.push(format!("lib{lib_name}.a"));
 
-        Command::new(GFORTRAN_NAME)
+        let res = Command::new("gfortran-12")
+            .env("LIB", "-L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib")
+            .env("SDKROOT", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
             .arg("-shared")
             .arg("-fPIC")
             .arg("amos/amos_iso_c_fortran_wrapper.f90")
@@ -40,10 +42,12 @@ pub fn main() {
             .arg("amos/zbesh.for")
             .arg("-o")
             .arg(lib_path.to_string_lossy().as_ref())
-            .output()
-            .expect(
-                "failed to compile fortran library,\nare you sure you have gfortran-13 installed?",
-            );
+            .output();
+
+        res.expect(
+            "failed to compile fortran library,\nare you sure you have gfortran-12 installed?",
+        );
+
         println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
         println!("cargo:rustc-link-lib=amos");
     }
