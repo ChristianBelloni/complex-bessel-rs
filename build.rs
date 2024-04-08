@@ -34,6 +34,7 @@ pub fn main() {
 
         Command::new(GFORTRAN_NAME)
             .arg("-shared")
+            .arg("-fPIC")
             .arg("amos/amos_iso_c_fortran_wrapper.f90")
             .arg("amos/machine.for")
             .arg("amos/zbesh.for")
