@@ -20,3 +20,6 @@ maintenance = { status = "actively-developed" }
 
 [dependencies]
 num = "0.4"
+
+[build-dependencies]
+cc = "1.0"

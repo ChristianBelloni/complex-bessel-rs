@@ -1,21 +1,6 @@
 #![allow(unused)]
 use std::{path::PathBuf, process::Command};
 
-#[cfg(target_os = "windows")]
-static PATH_FINDER_COMMAND: &str = "where";
-#[cfg(target_os = "linux")]
-static PATH_FINDER_COMMAND: &str = "which";
-
-#[cfg(target_os = "windows")]
-static GFORTRAN_NAME: &str = "gfortran";
-#[cfg(target_os = "linux")]
-static GFORTRAN_NAME: &str = "gfortran-13";
-
-#[cfg(target_os = "macos")]
-static GFORTRAN_NAME: &str = "gfortran-13";
-#[cfg(target_os = "macos")]
-static PATH_FINDER_COMMAND: &str = "which";
-
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
@@ -24,43 +9,36 @@ macro_rules! p {
 
 #[cfg(not(doc))]
 pub fn main() {
-    if std::env::var("DOCS_RS").is_ok() {
-    } else {
-        _ = get_fortran_compiler().unwrap_or_else(|| panic!("{} not installed!", GFORTRAN_NAME));
-        let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
-        let lib_name = "amos";
-        let mut lib_path = out_path.clone();
-        lib_path.push(format!("lib{lib_name}.a"));
+    let res = Command::new("gfortran")
+        .arg("-print-file-name=libgfortran.a")
+        .output()
+        .unwrap()
+        .stdout;
 
-        let res = Command::new("gfortran")
-            .arg("-shared")
-            .arg("-fPIC")
-            .arg("amos/amos_iso_c_fortran_wrapper.f90")
-            .arg("amos/machine.for")
-            .arg("amos/zbesh.for")
-            .arg("-o")
-            .arg(lib_path.to_string_lossy().as_ref())
-            .output();
+    let path = String::from_utf8(res).unwrap();
+    let path = PathBuf::from(path);
+    let path = path.parent().unwrap();
 
-        res.expect("failed to compile fortran library,\nare you sure you have gfortran installed?");
+    println!("cargo:rustc-link-search={}", path.display());
 
-        println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
-        println!("cargo:rustc-link-lib=amos");
-    }
-}
+    println!("cargo:rustc-link-lib=gfortran");
 
-#[cfg(doc)]
-fn main() {}
-
-fn get_fortran_compiler() -> Option<String> {
-    Some(
-        String::from_utf8_lossy(
-            &Command::new(PATH_FINDER_COMMAND)
-                .arg(GFORTRAN_NAME)
-                .output()
-                .ok()?
-                .stdout,
-        )
-        .to_string(),
-    )
+    cc::Build::new()
+        .files([
+            "amos/amos_iso_c_fortran_wrapper.f90",
+            "amos/machine.for",
+            "amos/zbesh.for",
+        ])
+        .compiler("gfortran")
+        // .flag("-std=legacy")
+        // .flag("-fdefault-real-8") // use 8 bytes for all floats
+        .flag("-Wno-maybe-uninitialized") // suppress the maybe-unitialized warnings
+        .flag("-O3") // opitmize level 3
+        .flag("-Wno-compare-reals")
+        .flag("-Wno-intrinsic-shadow")
+        .flag("-Wno-do-subscript")
+        .flag("-Wno-unused-dummy-argument")
+        // .flag("-lgfortran")
+        .static_flag(true)
+        .compile("amos");
 }
