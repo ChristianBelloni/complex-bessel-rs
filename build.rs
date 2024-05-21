@@ -26,15 +26,13 @@ macro_rules! p {
 pub fn main() {
     if std::env::var("DOCS_RS").is_ok() {
     } else {
-        _ = get_fortran_compiler().expect(&format!("{} not installed!", GFORTRAN_NAME));
+        _ = get_fortran_compiler().unwrap_or_else(|| panic!("{} not installed!", GFORTRAN_NAME));
         let out_path: PathBuf = std::env::var("OUT_DIR").unwrap().into();
         let lib_name = "amos";
         let mut lib_path = out_path.clone();
         lib_path.push(format!("lib{lib_name}.a"));
 
-        let res = Command::new("gfortran-12")
-            .env("LIB", "-L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib")
-            .env("SDKROOT", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+        let res = Command::new("gfortran")
             .arg("-shared")
             .arg("-fPIC")
             .arg("amos/amos_iso_c_fortran_wrapper.f90")
@@ -44,9 +42,7 @@ pub fn main() {
             .arg(lib_path.to_string_lossy().as_ref())
             .output();
 
-        res.expect(
-            "failed to compile fortran library,\nare you sure you have gfortran-12 installed?",
-        );
+        res.expect("failed to compile fortran library,\nare you sure you have gfortran installed?");
 
         println!("cargo:rustc-link-search={}", out_path.to_string_lossy());
         println!("cargo:rustc-link-lib=amos");
@@ -59,8 +55,8 @@ fn main() {}
 fn get_fortran_compiler() -> Option<String> {
     Some(
         String::from_utf8_lossy(
-            &Command::new(&PATH_FINDER_COMMAND)
-                .arg(&GFORTRAN_NAME)
+            &Command::new(PATH_FINDER_COMMAND)
+                .arg(GFORTRAN_NAME)
                 .output()
                 .ok()?
                 .stdout,
