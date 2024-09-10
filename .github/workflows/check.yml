@@ -115,8 +115,10 @@ jobs:
       #   if: runner.os == 'Windows'
       # - run: vcpkg install openssl:x64-windows-static-md
       #   if: runner.os == 'Windows'
-      if: runner.os == "MacOS"
-        - run: brew install gfortran
+      if: runner.os == 'macOS'
+        run:  |
+          brew install gfortran
+
       - uses: actions/checkout@v4
         with:
           submodules: true
