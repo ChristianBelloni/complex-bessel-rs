@@ -107,16 +107,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain:
+          - {compiler: gcc, version: 13}
+          - {compiler: intel, version: '2023.2'}
+          - {compiler: intel-classic, version: '2021.10'}
+          - {compiler: nvidia-hpc, version: '23.11'}
+        include:
+          - os: ubuntu-latest
+            toolchain: {compiler: gcc, version: 12}
+        exclude:
+          - os: macos-latest
+            toolchain: {compiler: intel, version: '2023.2'}
+          - os: macos-latest
+            toolchain: {compiler: nvidia-hpc, version: '23.11'}
+          - os: windows-latest
+            toolchain: {compiler: nvidia-hpc, version: '23.11'}
     steps:
-      # if your project needs OpenSSL, uncommment this to fix Windows builds.
-      # it's commented out by default as tthe install command takes 5-10m.
-      # - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-      #   if: runner.os == 'Windows'
-      # - run: vcpkg install openssl:x64-windows-static-md
-      #   if: runner.os == 'Windows'
-      - name: Setup GNU Fortran
-        uses: modflowpy/install-gfortran-action@v1
+      - uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: ${{ matrix.toolchain.compiler }}
+          version: ${{ matrix.toolchain.version }}
       - uses: actions/checkout@v4
         with:
           submodules: true
