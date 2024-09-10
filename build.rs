@@ -15,11 +15,16 @@ pub fn main() {
         .unwrap()
         .stdout;
 
-    let path = String::from_utf8(res).unwrap();
-    let path = PathBuf::from(path);
-    let path = path.parent().unwrap();
+    if res.is_empty() {
+        p!("gfortran -print-file-name=libgfortran.a returned an empty string!\n make sure you have gfortran13 installed");
+        println!("cargo:rustc-link-search=libgfortran.a");
+    } else {
+        let path = String::from_utf8(res).unwrap();
+        let path = PathBuf::from(path);
+        let path = path.parent().unwrap();
 
-    println!("cargo:rustc-link-search={}", path.display());
+        println!("cargo:rustc-link-search={}", path.display());
+    }
 
     println!("cargo:rustc-link-lib=gfortran");
 
