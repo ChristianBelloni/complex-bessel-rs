@@ -115,9 +115,8 @@ jobs:
       #   if: runner.os == 'Windows'
       # - run: vcpkg install openssl:x64-windows-static-md
       #   if: runner.os == 'Windows'
-      - if: runner.os == 'macOS'
-        run: |
-          brew install gfortran
+      - name: Setup GNU Fortran
+        uses: modflowpy/install-gfortran-action@v1
       - uses: actions/checkout@v4
         with:
           submodules: true
