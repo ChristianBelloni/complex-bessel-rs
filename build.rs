@@ -43,6 +43,7 @@ pub fn main() {
         .flag("-Wno-intrinsic-shadow")
         .flag("-Wno-do-subscript")
         .flag("-Wno-unused-dummy-argument")
+        .cpp_link_stdlib(None)
         // .flag("-lgfortran")
         .static_flag(true)
         .compile("amos");
