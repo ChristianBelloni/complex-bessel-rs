@@ -15,4 +15,4 @@ jobs:
       - name: Setup WSL
         uses: Vampire/setup-wsl@v3.1.1
       - name: install fortran compiler
-        run: sudo apt update && sudo apt upgrade && sudo apt install -y gfortran
+        run: sudo apt update -y && sudo apt upgrade -y && sudo apt install -y gfortran
