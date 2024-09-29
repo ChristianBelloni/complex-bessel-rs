@@ -22,7 +22,7 @@ pub fn main() {
         let path = String::from_utf8(res).unwrap();
         let path = PathBuf::from(path);
         let path = path.parent().unwrap();
-        if !path.is_empty() {
+        if !path.to_string_lossy().is_empty() {
             println!("cargo:rustc-link-search={}", path.display());
         }
         
