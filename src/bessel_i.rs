@@ -44,12 +44,13 @@ unsafe fn _bessel_i(order: f64, z: Complex64) -> Result<Complex64, i32> {
 
         answer += 2.0 / std::f64::consts::PI * s * answerk;
 
-        if ierr != 0 {
-            return Err(ierr);
-        }
         if ierrk != 0 {
             return Err(ierrk);
         }
+    }
+
+    if ierr != 0 {
+        return Err(ierr);
     }
 
     Ok(answer)
