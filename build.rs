@@ -25,7 +25,6 @@ pub fn main() {
         if !path.to_string_lossy().is_empty() {
             println!("cargo:rustc-link-search={}", path.display());
         }
-        
     }
 
     println!("cargo:rustc-link-lib=gfortran");
