@@ -16,7 +16,9 @@ pub fn main() {
         .stdout;
 
     if res.is_empty() {
-        p!("gfortran -print-file-name=libgfortran.a returned an empty string!\n make sure you have gfortran13 installed");
+        p!(
+            "gfortran -print-file-name=libgfortran.a returned an empty string!\n make sure you have gfortran13 installed"
+        );
         println!("cargo:rustc-link-search=libgfortran.a");
     } else {
         let path = String::from_utf8(res).unwrap();
@@ -26,7 +28,10 @@ pub fn main() {
                 println!("cargo:rustc-link-search={}", path.display());
             }
         } else {
-            p!("gfortran -print-file-name returned `{}` but no parent directory could be determined", path.display());
+            p!(
+                "gfortran -print-file-name returned `{}` but no parent directory could be determined",
+                path.display()
+            );
         }
     }
 
