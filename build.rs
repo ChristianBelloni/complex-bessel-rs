@@ -12,7 +12,7 @@ pub fn main() {
     let res = Command::new("gfortran")
         .arg("-print-file-name=libgfortran.a")
         .output()
-        .unwrap()
+        .expect("failed to run gfortran")
         .stdout;
 
     if res.is_empty() {
@@ -21,9 +21,12 @@ pub fn main() {
     } else {
         let path = String::from_utf8(res).unwrap();
         let path = PathBuf::from(path);
-        let path = path.parent().unwrap();
-        if !path.to_string_lossy().is_empty() {
-            println!("cargo:rustc-link-search={}", path.display());
+        if let Some(path) = path.parent() {
+            if !path.to_string_lossy().is_empty() {
+                println!("cargo:rustc-link-search={}", path.display());
+            }
+        } else {
+            p!("gfortran -print-file-name returned `{}` but no parent directory could be determined", path.display());
         }
     }
 
