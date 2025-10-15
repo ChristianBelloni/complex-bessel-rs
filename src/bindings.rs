@@ -1,5 +1,5 @@
 use std::ffi::{c_double, c_int};
-extern "C" {
+unsafe extern "C" {
     pub fn zbesy_wrap(
         zr: c_double,
         zi: c_double,

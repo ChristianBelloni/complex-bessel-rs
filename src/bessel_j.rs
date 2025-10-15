@@ -22,8 +22,9 @@ unsafe fn _bessel_j(order: f64, z: Complex64) -> Result<Complex64, i32> {
     let mut nz = 0;
     let mut ierr = 0;
 
-    zbesj_wrap(zr, zi, nu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut ierr);
-
+    unsafe {
+        zbesj_wrap(zr, zi, nu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut ierr);
+    }
     if zi == 0.0 && zr >= 0.0 {
         cyi = 0.0;
     }
@@ -45,20 +46,21 @@ unsafe fn _bessel_j(order: f64, z: Complex64) -> Result<Complex64, i32> {
         let kode_y = 1;
         let n_y = 1;
         let mut nz_y = 0;
-
-        zbesy_wrap(
-            zr,
-            zi,
-            nu,
-            kode_y,
-            n_y,
-            &mut cyr_y,
-            &mut cyi_y,
-            &mut nz_y,
-            &mut cwrkr_y,
-            &mut cwrki_y,
-            &mut ierr_y,
-        );
+        unsafe {
+            zbesy_wrap(
+                zr,
+                zi,
+                nu,
+                kode_y,
+                n_y,
+                &mut cyr_y,
+                &mut cyi_y,
+                &mut nz_y,
+                &mut cwrkr_y,
+                &mut cwrki_y,
+                &mut ierr_y,
+            );
+        }
 
         if ierr_y != 0 {
             Err(ierr_y)?;

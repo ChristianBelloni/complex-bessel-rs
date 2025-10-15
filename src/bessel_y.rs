@@ -51,9 +51,11 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
 
     let mut answer;
 
-    zbesy_wrap(
-        zr, zi, nu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut cwrkr, &mut cwrki, &mut ierr,
-    );
+    unsafe {
+        zbesy_wrap(
+            zr, zi, nu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut cwrkr, &mut cwrki, &mut ierr,
+        );
+    }
 
     if zi == 0.0 && zr == 0.0 {
         cyi = 0.0;
@@ -78,9 +80,11 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
         let kodej = 1;
         let nj = 1;
 
-        zbesj_wrap(
-            zr, zi, nu, kodej, nj, &mut cyrj, &mut cyij, &mut nz_j, &mut ierrj,
-        );
+        unsafe {
+            zbesj_wrap(
+                zr, zi, nu, kodej, nj, &mut cyrj, &mut cyij, &mut nz_j, &mut ierrj,
+            );
+        }
 
         if ierrj != 0 {
             Err(ierrj)?;
@@ -96,6 +100,7 @@ unsafe fn _bessel_y(order: f64, z: Complex64) -> Result<Complex64, i32> {
     Ok(answer)
 }
 
+#[allow(unused)]
 #[cfg(test)]
 mod tests {
     use super::*;
