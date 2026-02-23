@@ -14,6 +14,10 @@ Negative orders are implemented via the standard formulae.
 
 To compile this library is necessary to install gfortran-13
 
+## Alternatives
+
+ - if you're looking for a pure rust port check out [complex-bessel](https://github.com/elgar328/complex-bessel)
+
 ## Credits
 
 - Joey Dumont and Denis Gagnon, complex_bessel: Release 0.6 (jun / 2015)
